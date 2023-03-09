@@ -82,10 +82,10 @@ export default function About({ }: Props) {
                     Vous pourriez aussi me connaître sous le nom de BeeDev.</p>
                 <p>Je suis un développeur web passionné, ayant commencé ma carrière dans l&apos;industrie de l&apos;hydro-énergie. Après avoir obtenu mon diplôme d&apos;ingénieur en Roumanie, j&apos;ai travaillé sur des projets de centrales hydro-électriques à Bucarest, acquérant ainsi des compétences en résolution de problèmes complexes, en communication et en gestion de projet.</p>
 
-                <p>Cependant, j&apos;ai rapidement réalisé que ma vraie passion était le développement web. J&apos;ai alors décidé de me lancer dans une reconversion professionnelle, en commençant par occuper différents postes dans des secteurs tels que l'agriculture, l'agroalimentaire et l'industrie automobile pour acquérir de nouvelles compétences.
+                <p>Cependant, j&apos;ai rapidement réalisé que ma vraie passion était le développement web. J&apos;ai alors décidé de me lancer dans une reconversion professionnelle, en commençant par occuper différents postes dans des secteurs tels que l&apos;agriculture, l&apos;agroalimentaire et l&apos;industrie automobile pour acquérir de nouvelles compétences.
 
-                    Au fil du temps, j&apos;ai suivi différentes formations en ligne pour approfondir mes connaissances en développement web. Aujourd&apos;hui, je suis fier de mes compétences en programmation et de ma capacité à créer des solutions innovantes pour des problèmes complexes.
-                    <p>Je suis constamment à la recherche de nouveaux défis et de projets passionnants qui me permettent de continuer à évoluer en tant que développeur web.</p></p>
+                    Au fil du temps, j&apos;ai suivi différentes formations en ligne pour approfondir mes connaissances en développement web. Aujourd&apos;hui, je suis fier de mes compétences en programmation et de ma capacité à créer des solutions innovantes pour des problèmes complexes.</p>
+                    <p>Je suis constamment à la recherche de nouveaux défis et de projets passionnants qui me permettent de continuer à évoluer en tant que développeur web.</p>
             </div>
 
         </motion.div>
