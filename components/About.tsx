@@ -85,7 +85,7 @@ export default function About({ }: Props) {
                 <p>Cependant, j&apos;ai rapidement réalisé que ma vraie passion était le développement web. J&apos;ai alors décidé de me lancer dans une reconversion professionnelle, en commençant par occuper différents postes dans des secteurs tels que l&apos;agriculture, l&apos;agroalimentaire et l&apos;industrie automobile pour acquérir de nouvelles compétences.
 
                     Au fil du temps, j&apos;ai suivi différentes formations en ligne pour approfondir mes connaissances en développement web. Aujourd&apos;hui, je suis fier de mes compétences en programmation et de ma capacité à créer des solutions innovantes pour des problèmes complexes.</p>
-                    <p>Je suis constamment à la recherche de nouveaux défis et de projets passionnants qui me permettent de continuer à évoluer en tant que développeur web.</p>
+                <p>Je suis constamment à la recherche de nouveaux défis et de projets passionnants qui me permettent de continuer à évoluer en tant que développeur web.</p>
             </div>
 
         </motion.div>
