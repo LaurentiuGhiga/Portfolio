@@ -76,7 +76,7 @@ export default function About({ }: Props) {
                 <Image className="hidden lg:block xl:mt-[140px]  xl:mb-20  md:mb-0 flex-shrink-0 md:rounded-lg  xl:w-[500px] xl:h-[500px] rounded-full h-56 w-56 my-auto object-cover mt-32 " src={coi} alt="Photo_profil" />
             </motion.div>
             <div className="p-8 text-sm">
-                <h4 className="text-4xl font-semibold">Voici un <span className='underline decoration-wavy decoration-2 decoration-[#F7AB0A]/50'> un petit</span> historique</h4>
+                <h4 className="text-4xl font-semibold">Voici un <span className='underline decoration-wavy decoration-2 decoration-[#F7AB0A]/50'> un petit</span> HISTORIQUE</h4>
 
                 <p className="mt-4 text-base ">Je suis Laurentiu <Image className='inline-block w-5 h-5 ml-0 mr-2 ' src={BeeDev} alt="photo_hero" />
                     Vous pourriez aussi me connaître sous le nom de BeeDev.</p>
