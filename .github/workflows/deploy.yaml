@@ -27,10 +27,10 @@ jobs:
       - name: Deploy to server
         uses: easingthemes/ssh-deploy@main
         with:
-          ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
-          ssh-host: ${{ secrets.SERVER_IP }}
-          ssh-username: ${{ secrets.SERVER_USERNAME }}
-          local-path: .next/
-          remote-path: /root/Portfolio  # Remplacez par le chemin de votre application sur le serveur
-          exclude: ".next/cache/**"
-          args: "-o StrictHostKeyChecking=no"
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.SERVER_IP }}
+          REMOTE_USER: ${{ secrets.SERVER_USERNAME }}
+          SOURCE: .next/
+          TARGET: /var/www/beedev.fr
+          EXCLUDE: ".next/cache/**"
+          ARGS: "-o StrictHostKeyChecking=no""
