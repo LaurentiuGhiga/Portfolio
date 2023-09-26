@@ -21,8 +21,8 @@ jobs:
 
       - name: Clear cache
         run: |
-              git clean -ffdx
-              rm -rf ${{ runner.workspace }}/node_modules
+            git clean -ffdx
+            rm -rf ${{ runner.workspace }}/node_modules
 
       - name: Deploy to server
         uses: easingthemes/ssh-deploy@v2.3.6
