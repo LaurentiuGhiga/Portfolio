@@ -1,0 +1,31 @@
+name: Deploy Next.js app
+
+on:
+  push:
+    branches:
+      - main  # Mettez le nom de votre branche principale ici
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build app
+        run: npm run build
+
+      - name: Deploy to server
+        uses: easingthemes/ssh-deploy@v2.3.6
+        with:
+          ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
+          ssh-host: ${{ secrets.SERVER_IP }}
+          ssh-username: ${{ secrets.SERVER_USERNAME }}
+          local-path: .next/
+          remote-path: /root/Portfolio  # Remplacez par le chemin de votre application sur le serveur
+          exclude: ".next/cache/**"
+          args: "-o StrictHostKeyChecking=no"
