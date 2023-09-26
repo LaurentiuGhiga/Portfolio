@@ -33,4 +33,4 @@ jobs:
           SOURCE: .next/
           TARGET: /var/www/beedev.fr
           EXCLUDE: ".next/cache/**"
-          ARGS: "-o StrictHostKeyChecking=no""
+          ARGS: "-o StrictHostKeyChecking=no"
