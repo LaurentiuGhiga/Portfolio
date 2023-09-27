@@ -27,6 +27,5 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
           script: |
-            cd /root/Portfolio
-            rm -rf ./*
-            cp -r /root/Portfolio/.next/* .
+            # Assurez-vous que le chemin source correspond à la structure de votre serveur
+            rsync -avz --delete .next/ /root/Portfolio/.next/
