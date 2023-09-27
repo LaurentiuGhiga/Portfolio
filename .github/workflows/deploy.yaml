@@ -19,11 +19,6 @@ jobs:
       - name: Build app
         run: npm run build
 
-      - name: Clear cache
-        run: |
-          git clean -ffdx
-          rm -rf node_modules/
-
       - name: Deploy to server
         uses: easingthemes/ssh-deploy@main
         with:
