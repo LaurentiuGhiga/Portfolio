@@ -29,3 +29,4 @@ jobs:
           script: |
             # Assurez-vous que le chemin source correspond à la structure de votre serveur
             rsync -avz --delete .next/ /home/laurentiu/Portfolio/Portfolio/.next/
+
