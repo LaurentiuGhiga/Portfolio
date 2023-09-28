@@ -28,4 +28,4 @@ jobs:
           port: 22
           script: |
             # Assurez-vous que le chemin source correspond à la structure de votre serveur
-            rsync -avz --delete .next/ /root/Portfolio/.next/
+            rsync -avz --delete .next/ /home/laurentiu/Portfolio/Portfolio/.next/
