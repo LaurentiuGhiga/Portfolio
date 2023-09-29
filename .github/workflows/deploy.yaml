@@ -25,14 +25,14 @@ jobs:
       - name: Save Docker image as tarball
         run: docker save -o my-next-app.tar my-next-app
 
-      - name: Copy Docker image to server
-        uses: appleboy/scp-action@v2
+      - name: Copy files to server
+        uses: easingthemes/scp-action@v1.0.1
         with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          source: my-next-app.tar
-          target: /tmp/my-next-app.tar
+          ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
+          ssh-host: ${{ secrets.SERVER_IP }}
+          ssh-username: ${{ secrets.SERVER_USERNAME }}
+          source: ${{ runner.temp }}/app-files
+          target: /root/Portfolio/
 
       - name: SSH into server and load Docker image
         uses: appleboy/ssh-action@master
