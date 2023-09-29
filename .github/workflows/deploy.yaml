@@ -19,7 +19,22 @@ jobs:
       - name: Build app
         run: npm run build
 
-      - name: Deploy to server
+      - name: Build Docker image
+        run: docker build -t my-next-app .
+
+      - name: Save Docker image as tarball
+        run: docker save -o my-next-app.tar my-next-app
+
+      - name: Copy Docker image to server
+        uses: appleboy/scp-action@v2
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          source: my-next-app.tar
+          target: /tmp/my-next-app.tar
+
+      - name: SSH into server and load Docker image
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP }}
@@ -27,6 +42,17 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
           script: |
-            # Assurez-vous que le chemin source correspond à la structure de votre serveur
-            rsync -avz --delete .next/ /root/Portfolio/.next/
+            sudo docker load -i /tmp/my-next-app.tar
+
+      - name: Run Docker container on server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: 22
+          script: |
+            sudo docker stop my-next-app || true
+            sudo docker rm my-next-app || true
+            sudo docker run -d -p 3000:3000 --name my-next-app my-next-app
 
