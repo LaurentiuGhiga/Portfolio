@@ -25,8 +25,14 @@ jobs:
       - name: Save Docker image as tarball
         run: docker save -o my-next-app.tar my-next-app
 
+      - name: Archive files
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-files
+          path: .next/
+
       - name: Copy files to server
-        uses: easingthemes/scp-action@v1.0.1
+        uses: appleboy/scp-action@master
         with:
           ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
           ssh-host: ${{ secrets.SERVER_IP }}
