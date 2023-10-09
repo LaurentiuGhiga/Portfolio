@@ -3,7 +3,7 @@ name: Deploy Next.js app
 on:
   push:
     branches:
-      - main  # Mettez le nom de votre branche principale ici
+      - main
 
 jobs:
   deploy:
@@ -13,11 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          path: Portfolio/Portfolio # Spécifiez le répertoire de travail ici
+          path: Portfolio/Portfolio # Répertoire de travail racine
 
       - name: Install dependencies
         run: npm install
-
+        
       - name: Build app
         run: npm run build
 
@@ -42,16 +42,6 @@ jobs:
           port: 22
           script: |
             ls /root/Portfolio/
-
-      - name: List files in current directory
-        run: ls
-
-      - name: Debug - List files in temp directory
-        run: ls ${{ runner.temp }}
-
-      - name: List files in app-files directory
-        run: ls ${{ runner.temp }}/app-files
-
 
       - name: Copy files to server
         uses: appleboy/scp-action@master
@@ -83,4 +73,3 @@ jobs:
             sudo docker stop my-next-app || true
             sudo docker rm my-next-app || true
             sudo docker run -d -p 3000:3000 --name my-next-app my-next-app
-
