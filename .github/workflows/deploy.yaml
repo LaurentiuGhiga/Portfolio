@@ -44,7 +44,7 @@ jobs:
       - name: List files in current directory
         run: ls
 
-      - name: Debug: List files in temp directory
+      - name: Debug - List files in temp directory
         run: ls ${{ runner.temp }}
 
       - name: List files in app-files directory
