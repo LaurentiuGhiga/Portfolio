@@ -50,7 +50,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USERNAME }}
-          source: ${{ runner.temp }}/app-files
+          source: ./
           target: /root/Portfolio/
 
       - name: SSH into server and load Docker image
