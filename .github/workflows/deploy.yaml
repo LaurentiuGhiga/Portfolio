@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-          with:
+        with:
             path: Portfolio # Spécifiez le répertoire de travail ici
 
       - name: Install dependencies
