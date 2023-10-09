@@ -41,6 +41,12 @@ jobs:
           script: |
             ls /root/Portfolio/
 
+      - name: List files in current directory
+        run: ls
+
+      - name: Debug: List files in temp directory
+        run: ls ${{ runner.temp }}
+
       - name: List files in app-files directory
         run: ls ${{ runner.temp }}/app-files
 
