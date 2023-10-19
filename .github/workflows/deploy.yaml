@@ -22,8 +22,10 @@ jobs:
         run: docker build -t my-next-app .
 
       - name: Save Docker image as tarball
-        run: docker save -o my-next-app.tar my-next-app
+        run: |
+          docker save -o my-next-app.tar my-next-app
           ls -l
+
 
       - name: Archive files
         uses: actions/upload-artifact@v2
