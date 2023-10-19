@@ -13,16 +13,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build app and Docker image
+      - name: Install dependencies and build app
         run: |
+          npm install
           npm run build
-          docker build -t my-next-app .
-        
+
+      - name: Build Docker image
+        run: docker build -t my-next-app .
+
       - name: Save Docker image as tarball
         run: docker save -o my-next-app.tar my-next-app
+        ls -l
 
       - name: Archive files
         uses: actions/upload-artifact@v2
@@ -30,20 +31,22 @@ jobs:
           name: app-files
           path: .next/
 
-      - name: SSH into server and deploy
+      - name: Deploy to server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SERVER_SSH_KEY }}  # Assurez-vous que la clé privée SSH est correctement nommée dans vos secrets
+          key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
           script: |
-            # Copy files to the server
+            # Copy files and Docker image to the server
             scp -i ${{ secrets.SERVER_SSH_KEY }} -r ./* ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }}:/root/Portfolio/
-            
-            # Load Docker image on the server
-            ssh -i ${{ secrets.SERVER_SSH_KEY }} ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} 'docker load -i /tmp/my-next-app.tar'
+            scp -i ${{ secrets.SERVER_SSH_KEY }} my-next-app.tar ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }}:/tmp/
 
-            # Run Docker container on the server
-            ssh -i ${{ secrets.SERVER_SSH_KEY }} ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} 'sudo docker stop my-next-app || true; sudo docker rm my-next-app || true; sudo docker run -d -p 3000:3000 --name my-next-app my-next-app'
-
+            # Load Docker image and run container on the server
+            ssh -i ${{ secrets.SERVER_SSH_KEY }} ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} '
+              docker load -i /tmp/my-next-app.tar
+              sudo docker stop my-next-app || true
+              sudo docker rm my-next-app || true
+              sudo docker run -d -p 3000:3000 --name my-next-app my-next-app
+            '
