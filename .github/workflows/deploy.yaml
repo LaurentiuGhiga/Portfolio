@@ -6,26 +6,28 @@ on:
       - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Cache dependencies
-        uses: actions/cache@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          node-version: 14
 
-      - name: Build app
+      - name: Install dependencies and build app
         run: |
-          docker build -t my-next-app .
-          docker save -o my-next-app.tar my-next-app
-          ls -l
+          npm install
+          npm run build
+
+      - name: Build Docker image
+        run: docker build -t my-next-app .
+
+      - name: Save Docker image as tarball
+        run: docker save -o my-next-app.tar my-next-app
 
       - name: Archive files
         uses: actions/upload-artifact@v2
@@ -33,12 +35,7 @@ jobs:
           name: app-files
           path: .next/
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check SSH Connection
+      - name: Deploy to server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP }}
@@ -46,44 +43,14 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
           script: |
-            ls /root/Portfolio/
+            # Copy files and Docker image to the server
+            scp -i ${{ secrets.SERVER_SSH_KEY }} -r ./* ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }}:/root/Portfolio/
+            scp -i ${{ secrets.SERVER_SSH_KEY }} my-next-app.tar ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }}:/tmp/
 
-      - name: Copy files to server
-        uses: appleboy/scp-action@master
-        with:
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          source: ./
-          target: /root/Portfolio/
-
-      - name: Copy Tarball to Server
-        uses: appleboy/scp-action@master
-        with:
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          source: ./my-next-app.tar
-          target: /tmp/
-
-      - name: SSH into server and load Docker image
-        uses: appleboy/ssh-action@master
-        with:
-          HOST: ${{ secrets.SERVER_IP }}
-          USERNAME: ${{ secrets.SERVER_USERNAME }}
-          KEY: ${{ secrets.SERVER_SSH_KEY }}
-          PORT: 22
-          SCRIPT: |
-            sudo docker load -i /tmp/my-next-app.tar
-
-      - name: Run Docker container on server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          port: 22
-          script: |
-            sudo docker stop my-next-app || true
-            sudo docker rm my-next-app || true
-            sudo docker run -d -p 3000:3000 --name my-next-app my-next-app
+            # Load Docker image and run container on the server
+            ssh -i ${{ secrets.SERVER_SSH_KEY }} ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} '
+              docker load -i /tmp/my-next-app.tar
+              sudo docker stop my-next-app || true
+              sudo docker rm my-next-app || true
+              sudo docker run -d -p 3000:3000 --name my-next-app my-next-app
+            '
