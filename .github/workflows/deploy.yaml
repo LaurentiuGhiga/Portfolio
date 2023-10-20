@@ -13,24 +13,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14
-
-      - name: Cache Node.js dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
       - name: Install dependencies and build app
         run: |
-          npm ci
+          npm install
           npm run build
-        working-directory: .
 
       - name: Build Docker image
         run: docker build -t my-next-app .
@@ -46,20 +32,15 @@ jobs:
           name: app-files
           path: .next/
 
-      - name: Deploy to server
+      - name: SSH into server and load Docker image
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          port: 22
-          script: |
-            # Copy files and Docker image to the server
-            scp -i ${{ secrets.SERVER_SSH_KEY }} -r ./* ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }}:/root/Portfolio/
-            scp -i ${{ secrets.SERVER_SSH_KEY }} my-next-app.tar ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }}:/tmp/
-
-            # Load Docker image and run container on the server
-            docker load -i /tmp/my-next-app.tar
+          HOST: ${{ secrets.SERVER_IP }}
+          USERNAME: ${{ secrets.SERVER_USERNAME }}
+          KEY: ${{ secrets.SERVER_SSH_KEY }}
+          PORT: 22
+          SCRIPT: |
+            sudo docker load -i my-next-app.tar
             sudo docker stop my-next-app || true
             sudo docker rm my-next-app || true
             sudo docker run -d -p 3000:3000 --name my-next-app my-next-app
