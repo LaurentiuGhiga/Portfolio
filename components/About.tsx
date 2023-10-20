@@ -77,7 +77,7 @@ export default function About({ }: Props) {
             </motion.div>
             <div className="p-8 text-sm">
                 <h4 className="text-4xl font-semibold">Voici un <span className='underline decoration-wavy decoration-2 decoration-[#F7AB0A]/50'> un petit</span> HISTORIQUE</h4>
-                <p className="mt-4 text-base ">Je suis Laurentiul <Image className='inline-block w-5 h-5 ml-0 mr-2 ' src={BeeDev} alt="photo_hero" />
+                <p className="mt-4 text-base ">Je suis Laurentiu <Image className='inline-block w-5 h-5 ml-0 mr-2 ' src={BeeDev} alt="photo_hero" />
                     Vous pourriez aussi me connaître sous le nom de BeeDev.</p>
                 <p>Je suis un développeur web passionné, ayant commencé ma carrière dans l&apos;industrie de l&apos;hydro-énergie. Après avoir obtenu mon diplôme d&apos;ingénieur en Roumanie, j&apos;ai travaillé sur des projets de centrales hydro-électriques à Bucarest, acquérant ainsi des compétences en résolution de problèmes complexes, en communication et en gestion de projet.</p>
 
