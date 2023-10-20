@@ -18,16 +18,27 @@ jobs:
         with:
           node-version: 14
 
+      - name: Cache Node.js dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Install dependencies and build app
         run: |
-          npm install
+          npm ci
           npm run build
+        working-directory: .
 
       - name: Build Docker image
         run: docker build -t my-next-app .
 
       - name: Save Docker image as tarball
-        run: docker save -o my-next-app.tar my-next-app
+        run: |
+          docker save -o my-next-app.tar my-next-app
+          ls -l
 
       - name: Archive files
         uses: actions/upload-artifact@v2
@@ -43,11 +54,11 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
           script: |
-            # Copier les fichiers et l'image Docker vers le serveur
+            # Copy files and Docker image to the server
             scp -i ${{ secrets.SERVER_SSH_KEY }} -r ./* ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }}:/root/Portfolio/
             scp -i ${{ secrets.SERVER_SSH_KEY }} my-next-app.tar ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }}:/tmp/
 
-            # Charger l'image Docker et exécuter le conteneur sur le serveur
+            # Load Docker image and run container on the server
             docker load -i /tmp/my-next-app.tar
             sudo docker stop my-next-app || true
             sudo docker rm my-next-app || true
