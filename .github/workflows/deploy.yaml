@@ -48,9 +48,7 @@ jobs:
             scp -i ${{ secrets.SERVER_SSH_KEY }} my-next-app.tar ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }}:/tmp/
 
             # Load Docker image and run container on the server
-            ssh -i ${{ secrets.SERVER_SSH_KEY }} ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} '
-              docker load -i /tmp/my-next-app.tar
-              sudo docker stop my-next-app || true
-              sudo docker rm my-next-app || true
-              sudo docker run -d -p 3000:3000 --name my-next-app my-next-app
-            '
+            docker load -i /tmp/my-next-app.tar
+            sudo docker stop my-next-app || true
+            sudo docker rm my-next-app || true
+            sudo docker run -d -p 3000:3000 --name my-next-app my-next-app
